@@ -303,10 +303,10 @@
         const typing = document.getElementById('typing-indicator');
         
         // Configuração da URL do Backend
-        // Em produção, substitua pela URL do seu backend no Render
+        // Em produção, usa a URL do Fly.io
         const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
             ? 'http://localhost:8000'
-            : 'https://seu-backend-render.onrender.com'; // ATUALIZAR COM SUA URL DO RENDER
+            : 'https://agente-cuidador-backend.fly.dev';
 
         // Função para atualizar ícone e texto do tema no menu
         function updateThemeMenu() {
