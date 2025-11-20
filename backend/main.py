@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel
 from langchain_community.vectorstores import FAISS
-from langchain_ollama import OllamaEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
@@ -15,6 +15,7 @@ import os
 import edge_tts
 import uuid
 import json
+import traceback
 from datetime import datetime
 from dotenv import load_dotenv
 from groq import Groq
@@ -46,9 +47,9 @@ app.add_middleware(
 )
 
 # --- CONFIGURAÇÃO RAG & IA ---
-# Usando Groq para LLM (Geração Rápida) e Ollama para Embeddings (Local)
+# Usando Groq para LLM (Geração Rápida) e Hugging Face para Embeddings (Online)
 MODEL_NAME = "llama-3.3-70b-versatile"  # Modelo atualizado Groq
-EMBEDDING_MODEL = "llama3" # Continua usando local para vetorização
+EMBEDDING_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"  # Modelo multilíngue profissional
 
 print(f"🔄 Inicializando IA com Groq ({MODEL_NAME})...")
 
@@ -61,7 +62,11 @@ print(f"📚 Carregando manual completo: {MANUAL_FILE}")
 CACHE_NAME = "manual_cuidador"
 FAISS_CACHE_DIR = os.path.join(BACKEND_DIR, ".faiss_cache", CACHE_NAME)
 
-embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
+embeddings = HuggingFaceEmbeddings(
+    model_name=EMBEDDING_MODEL,
+    model_kwargs={'device': 'cpu'},  # CPU é suficiente para embeddings
+    encode_kwargs={'normalize_embeddings': True}  # Melhora qualidade
+)
 vectorstore = None
 
 # Tentar carregar do cache
@@ -303,7 +308,10 @@ async def chat_endpoint(
             final_response_text = clean_response_text(raw_response)
             print("✅ Resposta gerada com sucesso.")
         except Exception as e:
-            print(f"❌ Erro na IA: {e}")
+            error_msg = str(e)
+            error_traceback = traceback.format_exc()
+            print(f"❌ Erro na IA: {error_msg}")
+            print(f"📋 Traceback completo:\n{error_traceback}")
             final_response_text = "Desculpe, tive um erro técnico ao processar sua solicitação."
             is_safe = False
 
