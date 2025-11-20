@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diário do Cuidador - Chat</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Tema Padrão (Dark) */
+        :root {
+            --bg-body: #f0f2f5;
+            --frame-bg: #1a1a1a;
+            --header-bg: #5B4DFF;
+            --chat-bg: #0b141a;
+            --input-area-bg: #202c33;
+            --input-wrapper-bg: #2a3942;
+            --text-primary: #d1d7db;
+            --text-secondary: #8696a0;
+            --msg-agent-bg: #202c33;
+            --msg-user-bg: #005c4b;
+            --msg-user-text: #e9edef;
+            --mic-btn-bg: #00a884;
+        }
+
+        /* Tema Claro (Light) */
+        body.light-mode {
+            --bg-body: #e0e0e0;
+            --frame-bg: #ffffff;
+            --header-bg: #5B4DFF; /* Mantém marca */
+            --chat-bg: #efeae2; /* Zap Claro */
+            --input-area-bg: #f0f2f5;
+            --input-wrapper-bg: #ffffff;
+            --text-primary: #111b21;
+            --text-secondary: #54656f;
+            --msg-agent-bg: #ffffff;
+            --msg-user-bg: #d9fdd3;
+            --msg-user-text: #111b21;
+            --mic-btn-bg: #00a884;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        
+        body {
+            background-color: var(--bg-body);
+            display: flex; justify-content: center; align-items: center; height: 100vh;
+            transition: background 0.3s;
+        }
+
+        .mobile-frame {
+            width: 375px; height: 812px; background: var(--frame-bg);
+            border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border: 12px solid #1a1a1a; position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
+        }
+
+        .notch {
+            width: 50%; height: 30px; background: #1a1a1a; position: absolute; top: 0; left: 25%;
+            border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; z-index: 10;
+        }
+
+        .header {
+            background: var(--header-bg); color: white; padding: 40px 20px 15px;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .header-top { display: flex; align-items: center; justify-content: space-between; }
+        .header-title { display: flex; align-items: center; gap: 10px; }
+        .header h1 { font-size: 18px; font-weight: 600; }
+        .status-dot { width: 8px; height: 8px; background: #00ff88; border-radius: 50%; }
+
+        /* Toggle Theme Btn */
+        .theme-toggle { 
+            background: none; border: none; cursor: pointer; 
+            width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; transition: background 0.2s;
+        }
+        .theme-toggle:hover { background: rgba(255,255,255,0.1); }
+        .theme-toggle svg { width: 20px; height: 20px; fill: white; }
+
+        /* Menu de Configurações */
+        .menu-container {
+            position: relative;
+        }
+        .menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+            margin-left: 8px;
+        }
+        .menu-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .menu-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: var(--frame-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            min-width: 180px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        .menu-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .menu-item {
+            width: 100%;
+            padding: 12px 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: background 0.2s;
+            text-align: left;
+        }
+        .menu-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .menu-item span:first-child {
+            font-size: 16px;
+        }
+
+        .chat-container {
+            flex: 1; padding: 20px; overflow-y: auto; background: var(--chat-bg);
+            display: flex; flex-direction: column; gap: 15px;
+        }
+
+        .message { max-width: 80%; padding: 12px 16px; border-radius: 18px; font-size: 15px; line-height: 1.4; color: var(--text-primary); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .message.user { background: var(--msg-user-bg); color: var(--msg-user-text); align-self: flex-end; border-bottom-right-radius: 4px; }
+        .message.agent { background: var(--msg-agent-bg); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .message.alert { background: #3b2e08; color: #ffd561; border: 1px solid #856404; align-self: center; width: 100%; text-align: center; font-size: 13px; }
+
+        /* Player de Áudio Estilo WhatsApp */
+        .audio-player {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 8px;
+            min-width: 200px;
+            max-width: 280px;
+        }
+        .audio-player.user {
+            background: rgba(255,255,255,0.15);
+        }
+        .audio-play-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+        .audio-play-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .audio-play-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+        .audio-waveform {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            height: 32px;
+        }
+        .audio-wave-bar {
+            width: 3px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 2px;
+            transition: height 0.1s;
+        }
+        .audio-wave-bar.active {
+            background: rgba(255,255,255,0.8);
+        }
+        .audio-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2px;
+            min-width: 45px;
+        }
+        .audio-duration {
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+        }
+        .audio-time {
+            font-size: 9px;
+            color: rgba(255,255,255,0.5);
+        }
+        .audio-hidden {
+            display: none;
+        }
+
+        .input-area { padding: 10px 15px; background: var(--input-area-bg); display: flex; align-items: flex-end; gap: 10px; }
+        .input-wrapper {
+            flex: 1; background: var(--input-wrapper-bg); border-radius: 20px; padding: 8px 15px;
+            display: flex; align-items: flex-end; min-height: 40px;
+        }
+        textarea {
+            flex: 1; border: none; outline: none; font-size: 15px; background: transparent;
+            color: var(--text-primary); resize: none; font-family: inherit; max-height: 100px;
+            overflow-y: auto; padding: 0; margin: 0; line-height: 20px; height: 20px;
+        }
+        textarea::placeholder { color: var(--text-secondary); }
+        
+        .send-btn { background: transparent; color: var(--text-secondary); border: none; cursor: pointer; font-size: 18px; padding: 0 0 2px 5px; }
+
+        .mic-btn {
+            width: 45px; height: 45px; background: var(--mic-btn-bg); border-radius: 50%; border: none;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.2s; flex-shrink: 0; margin-bottom: 2px;
+        }
+        .mic-btn svg { width: 24px; height: 24px; fill: white; }
+        .mic-btn.recording { background: #ff3b30; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        .typing { font-size: 12px; color: var(--text-secondary); margin-left: 20px; margin-bottom: 5px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-frame">
+        <div class="notch"></div>
+        <div class="header">
+            <div class="header-top">
+                <div class="header-title">
+                    <div class="status-dot"></div>
+                    <h1>Assistente Cuidador</h1>
+                </div>
+                <!-- Menu de Configurações -->
+                <div class="menu-container">
+                    <button class="menu-btn" id="menu-btn" onclick="toggleMenu()" title="Menu">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="white">
+                            <circle cx="12" cy="5" r="1.5"/>
+                            <circle cx="12" cy="12" r="1.5"/>
+                            <circle cx="12" cy="19" r="1.5"/>
+                        </svg>
+                    </button>
+                    <div class="menu-dropdown" id="menu-dropdown">
+                        <button class="menu-item" id="theme-menu-item" onclick="toggleTheme(); toggleMenu();">
+                            <span id="theme-icon-menu">☀️</span>
+                            <span id="theme-text-menu">Modo claro</span>
+                        </button>
+                        <button class="menu-item" onclick="clearHistory(); toggleMenu();">
+                            <span>🗑️</span>
+                            <span>Limpar conversa</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-container" id="chat-box">
+            <div class="message agent">
+                Olá! Sou seu assistente. Posso ajudar com manejo de sintomas e cuidados.
+            </div>
+        </div>
+
+        <div class="typing" id="typing-indicator">Gravando áudio...</div>
+
+        <div class="input-area">
+            <div class="input-wrapper">
+                <textarea id="user-input" placeholder="Mensagem" rows="1"></textarea>
+                <button id="send-btn" class="send-btn">➤</button>
+            </div>
+            <!-- Botão de microfone removido temporariamente - será implementado no futuro -->
+        </div>
+    </div>
+
+    <script>
+        const input = document.getElementById('user-input');
+        const chatBox = document.getElementById('chat-box');
+        const sendBtn = document.getElementById('send-btn');
+        const typing = document.getElementById('typing-indicator');
+        
+        // Configuração da URL do Backend
+        // Em produção, substitua pela URL do seu backend no Render
+        const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:8000'
+            : 'https://seu-backend-render.onrender.com'; // ATUALIZAR COM SUA URL DO RENDER
+
+        // Função para atualizar ícone e texto do tema no menu
+        function updateThemeMenu() {
+            const themeIcon = document.getElementById('theme-icon-menu');
+            const themeText = document.getElementById('theme-text-menu');
+            if (document.body.classList.contains('light-mode')) {
+                if (themeIcon) themeIcon.textContent = '🌙';
+                if (themeText) themeText.textContent = 'Modo escuro';
+            } else {
+                if (themeIcon) themeIcon.textContent = '☀️';
+                if (themeText) themeText.textContent = 'Modo claro';
+            }
+        }
+
+        // Carregar histórico ao iniciar
+        window.onload = () => {
+            loadHistory();
+            // Recuperar tema salvo
+            if (localStorage.getItem('theme') === 'light') {
+                document.body.classList.add('light-mode');
+            }
+            updateThemeMenu();
+        };
+
+        // Ícones SVG
+        const sunIcon = '<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 000-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000 1.41.996.996 0 001.41 0l1.06-1.06c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06z"/>';
+        
+        const moonIcon = '<path d="M9.37 5.51A7.35 7.35 0 009.1 7.5c0 4.08 3.32 7.4 7.4 7.4.68 0 1.35-.09 1.99-.27A7.014 7.014 0 0112 19c-3.86 0-7-3.14-7-7 0-2.93 1.81-5.45 4.37-6.49zM12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 01-4.4 2.26 9.406 9.406 0 01-6.69-2.75A8.97 8.97 0 0012 3z"/>';
+
+        // Toggle Theme
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            if (document.body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+            }
+            updateThemeMenu();
+        }
+
+        // Configuração do Input Auto-resize
+        input.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+            if (this.value === '') this.style.height = '20px';
+        });
+
+        // Envio de Mensagem (Apenas Texto - Áudio será implementado no futuro)
+        async function sendMessage(text) {
+            if (!text || text.trim() === '') return;
+
+            // UI Update
+            addMessage(text, 'user');
+            input.value = '';
+            input.style.height = '20px';
+            
+            typing.innerText = "Digitando...";
+            typing.style.display = 'block';
+            scrollToBottom();
+
+            // Preparar FormData (apenas texto)
+            const formData = new FormData();
+            formData.append('message', text.trim());
+
+            try {
+                const apiUrl = `${BACKEND_URL}/chat`;
+                console.log("📡 Enviando requisição para", apiUrl);
+                const res = await fetch(apiUrl, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                console.log("📥 Status da resposta:", res.status, res.statusText);
+                
+                if (!res.ok) {
+                    throw new Error(`Erro HTTP ${res.status}: ${res.statusText}`);
+                }
+                
+                const data = await res.json();
+                
+                console.log("📥 Resposta completa do backend:", data);
+                console.log("📝 text_response recebido:", data.text_response ? "Sim" : "Não");
+                
+                typing.style.display = 'none';
+                
+                // Adicionar Resposta (apenas texto)
+                const type = data.is_safe ? 'agent' : 'alert';
+                addMessage(data.text_response, type);
+
+            } catch (error) {
+                typing.style.display = 'none';
+                console.error("❌ Erro completo:", error);
+                console.error("❌ Mensagem:", error.message);
+                console.error("❌ Stack:", error.stack);
+                
+                let errorMsg = "Erro de conexão.";
+                if (error.message.includes('Failed to fetch') || error.name === 'TypeError') {
+                    errorMsg = "⚠️ Erro: Não foi possível conectar ao servidor.<br><br>Verifique:<br>1. O backend está rodando? (uvicorn main:app --reload)<br>2. Está na porta 8000? (http://localhost:8000)<br>3. Abra o console (F12) para mais detalhes";
+                } else if (error.message.includes('NetworkError')) {
+                    errorMsg = "Erro de rede. Verifique sua conexão.";
+                } else if (error.message.includes('HTTP')) {
+                    errorMsg = `Erro do servidor: ${error.message}`;
+                } else {
+                    errorMsg = `Erro: ${error.message}`;
+                }
+                
+                addMessage(errorMsg, 'alert');
+            }
+        }
+
+        // Botão Enviar Texto
+        sendBtn.addEventListener('click', () => sendMessage(input.value.trim()));
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) { 
+                e.preventDefault(); 
+                sendMessage(input.value.trim()); 
+            }
+        });
+        
+        // Lógica de gravação de áudio removida temporariamente - será implementada no futuro
+
+        // Adicionar Mensagem na Tela e Salvar
+        function addMessage(text, type, save = true) {
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+            
+            if (text) {
+                const contentDiv = document.createElement('div');
+                // Usa 'marked' para renderizar Markdown (negrito, listas)
+                // Se for usuário (sem markdown), usa texto puro para segurança
+                if (type === 'agent') {
+                    contentDiv.innerHTML = marked.parse(text);
+                } else if (type === 'alert') {
+                    // Mensagens de alerta podem conter HTML
+                    contentDiv.innerHTML = text.replace(/\n/g, '<br>');
+                } else {
+                    // Mensagens do usuário: apenas texto puro
+                    contentDiv.textContent = text;
+                }
+                div.appendChild(contentDiv);
+            }
+
+            // Player de Áudio removido temporariamente - será implementado no futuro
+
+            chatBox.appendChild(div);
+            scrollToBottom();
+
+            if (save) {
+                saveToHistory({ text, type });
+            }
+        }
+
+        // Funções de Histórico (LocalStorage)
+        function saveToHistory(msgObj) {
+            let history = JSON.parse(localStorage.getItem('chat_history')) || [];
+            history.push(msgObj);
+            localStorage.setItem('chat_history', JSON.stringify(history));
+        }
+
+        function loadHistory() {
+            let history = JSON.parse(localStorage.getItem('chat_history')) || [];
+            if (history.length > 0) {
+                // Limpa mensagem inicial padrão se tiver histórico
+                chatBox.innerHTML = ''; 
+                history.forEach(msg => addMessage(msg.text, msg.type, false));
+            }
+        }
+
+        // Toggle Menu de Configurações
+        function toggleMenu() {
+            const menu = document.getElementById('menu-dropdown');
+            if (menu) {
+                menu.classList.toggle('show');
+            }
+        }
+
+        // Fechar menu ao clicar fora
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('menu-dropdown');
+            const menuBtn = document.getElementById('menu-btn');
+            if (menu && menuBtn && !menu.contains(e.target) && !menuBtn.contains(e.target)) {
+                menu.classList.remove('show');
+            }
+        });
+
+        function clearHistory() {
+            if(confirm("Deseja limpar toda a conversa?")) {
+                localStorage.removeItem('chat_history');
+                location.reload();
+            }
+        }
+
+        function scrollToBottom() { chatBox.scrollTop = chatBox.scrollHeight; }
+    </script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+# Netlify redirects - Proxy para API do backend
+/api/*  https://seu-backend-render.onrender.com/:splat  200
+

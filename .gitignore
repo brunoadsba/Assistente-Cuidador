@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Environment variables
+.env
+.env.local
+
+# FAISS Cache
+backend/.faiss_cache/
+
+# Temporary files
+backend/temp_*.mp3
+backend/temp_*.webm
+backend/temp_*.wav
+
+# Logs
+backend/historico_conversas.json
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+

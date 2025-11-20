@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+langchain
+langchain-community
+langchain-ollama
+langchain-groq
+faiss-cpu
+python-multipart
+pydantic
+python-dotenv
+edge-tts
+aiofiles
+groq

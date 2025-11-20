@@ -1,0 +1,108 @@
+# Protocolos de Cuidado e Manejo de Demência (Versão Expandida)
+# Fonte: Baseado em Diretrizes de Cuidados Geriátricos e Alzheimer
+
+# --- MÓDULO 1: COMPORTAMENTO E MANEJO ---
+
+[SINTOMA: AGRESSIVIDADE E AGITAÇÃO]
+Se o paciente apresentar comportamento agressivo (físico ou verbal):
+1. Mantenha a calma e postura neutra: Não grite, não discuta e não tente conter fisicamente a menos que estritamente necessário para segurança.
+2. Identifique o gatilho (Regra dos 5 "Is"):
+   - Infecção (ex: urinária)?
+   - Incômodo (dor, roupa apertada, frio/calor)?
+   - Ingestão (fome, sede, efeito de remédios)?
+   - Imobilidade (muito tempo na mesma posição)?
+   - Isolamento (solidão ou excesso de estímulo)?
+3. Validação Emocional: Diga "Eu vejo que você está chateado" em vez de "Pare com isso".
+4. Redirecionamento: Mude o ambiente ou ofereça um lanche/atividade que ele goste.
+5. Segurança: Remova objetos perigosos do alcance. Se houver risco iminente, afaste-se e chame ajuda.
+
+[SINTOMA: PERGUNTAS REPETITIVAS (LOOPING)]
+Se o paciente repete a mesma pergunta incessantemente:
+1. Não use a lógica: Explicar "eu já te disse" não funciona pois a memória de curto prazo falhou.
+2. Responda brevemente: Dê a resposta simples novamente.
+3. Use auxiliares visuais: Escreva a resposta num quadro branco (ex: "Almoço: 12:00").
+4. Tente entender a emoção: "Que horas vamos para casa?" pode significar "Estou inseguro aqui". Responda à emoção: "Estamos seguros aqui, eu estou com você".
+5. Distração tátil: Dê algo para as mãos ocuparem (dobrar toalhas, segurar uma bola antiestresse).
+
+[SINTOMA: ALUCINAÇÕES E DELÍRIOS]
+Se o paciente vê/ouve coisas que não existem:
+1. Não confronte a realidade dele: Dizer "não tem nada ali" gera conflito.
+2. Valide o medo, não o objeto: "Você está vendo uma aranha? Deve ser assustador. Eu vou tirar ela daqui" (mesmo que não exista).
+3. Cheque o ambiente: Sombras, espelhos e TV ligada podem confundir o cérebro. Melhore a iluminação.
+4. Delírio de Roubo ("Roubaram minha carteira"): Não argumente. Ajude a procurar. Tenha "cópias" de objetos importantes para "encontrar" magicamente.
+
+[SINTOMA: WANDERING (DEAMBULAÇÃO/PERAMBULAÇÃO)]
+Se o paciente anda sem destino ou tenta fugir:
+1. Identifique a necessidade: Pode ser vontade de ir ao banheiro, fome ou tédio.
+2. Ambiente seguro: Garanta que portas estejam trancadas ou com alarmes sonoros. Camufle as saídas (ex: cortina sobre a porta).
+3. Exercício: Caminhar gasta energia. Caminhe com ele em local seguro.
+4. Identificação: Mantenha pulseira com nome e telefone no paciente sempre.
+
+# --- MÓDULO 2: HIGIENE PESSOAL ---
+
+[BANHO: RECUSA E MEDO]
+O banho é frequentemente o momento mais estressante.
+1. Preparação do ambiente: Banheiro aquecido, piso antiderrapante, tudo à mão antes de trazer o paciente.
+2. Técnica do "Banho Coberto": Mantenha uma toalha sobre o corpo do paciente enquanto lava por baixo. Reduz a sensação de nudez e frio.
+3. Chuveirinho de mão: Menos assustador que o chuveiro fixo caindo na cabeça.
+4. Negociação: Se ele recusa "banho", convide para "se refrescar" ou "lavar os pés".
+5. Frequência: Banho completo diário não é obrigatório se a higiene íntima (banho de gato) for bem feita. 2-3 vezes na semana pode bastar em casos difíceis.
+
+[BANHO NO LEITO (PACIENTE ACAMADO)]
+1. Material: Bacia com água morna, sabonete neutro, toalhas, lençóis limpos.
+2. Sequência: Comece pelo rosto (só água), depois braços, tronco, pernas, costas. Deixe a região genital por último.
+3. Privacidade: Descubra apenas a parte que está lavando. Seque imediatamente para não esfriar.
+4. Hidratação: Aplique creme hidratante nas áreas de pressão (cotovelos, calcanhares, sacro) para prevenir feridas.
+
+[HIGIENE BUCAL]
+1. Se ele não abre a boca: Não force. Tente estimular tocando suavemente os lábios ou modelando (escove seus dentes na frente dele).
+2. Dentadura (Prótese): Deve ser retirada à noite e limpa diariamente. Verifique se não machuca a gengiva (causa comum de recusa alimentar).
+
+# --- MÓDULO 3: ALIMENTAÇÃO E NUTRIÇÃO ---
+
+[RECUSA ALIMENTAR]
+1. Causa física: Dor de dente? Prótese mal ajustada? Constipação?
+2. Perda de paladar: Comida pode parecer sem gosto. Use temperos naturais mais fortes (ervas), evite excesso de sal.
+3. Simplifique: O prato cheio pode confundir. Sirva um alimento por vez.
+4. Finger Food: Se ele não consegue usar talheres, ofereça alimentos que podem ser comidos com a mão (pedacinhos de frango, legumes cozidos, sanduíches).
+
+[DISFAGIA (DIFICULDADE DE ENGOLIR)]
+Sinais de alerta: Tosse durante refeição, voz "molhada", demora para engolir.
+1. Consistência: Alimentos pastosos (purês) são mais seguros que líquidos ralos (água) ou sólidos secos (farofa).
+2. Espessantes: Use espessantes em líquidos se houver engasgos frequentes (consulte fonoaudiólogo).
+3. Postura: Sempre sentado a 90 graus. Nunca alimente paciente deitado. Mantenha sentado por 30min após comer.
+
+# --- MÓDULO 4: SONO E REPOUSO ---
+
+[INSÔNIA E TROCA DO DIA PELA NOITE]
+1. Higiene do sono: Rotina rígida. Acordar no mesmo horário.
+2. Exposição à luz: Muita luz natural pela manhã/tarde para regular o ciclo circadiano.
+3. Evite sonecas longas: Cochilo diurno máximo de 20-30min.
+4. Reduza líquidos à noite: Para evitar levantar para ir ao banheiro.
+5. Ambiente noturno: Silencioso, escuro e temperatura agradável.
+
+# --- MÓDULO 5: MOBILIDADE E SEGURANÇA ---
+
+[PREVENÇÃO DE QUEDAS]
+1. Casa: Remova tapetes soltos ("tapetes voadores"). Tire fios do caminho.
+2. Iluminação: Luz noturna no corredor/banheiro.
+3. Calçados: Sapatos fechados com solado de borracha. Evite chinelos de dedo.
+4. Banheiro: Barras de apoio no box e vaso sanitário são essenciais. Cadeira de banho é mais segura que ficar em pé.
+
+[PREVENÇÃO DE LESÃO POR PRESSÃO (ESCARAS)]
+Para pacientes acamados ou em cadeira de rodas:
+1. Mudança de decúbito: Mude a posição do paciente a cada 2 horas (Direita, Esquerda, Costas).
+2. Hidratação da pele: Mantenha pele limpa e hidratada, mas não úmida (urina/suor).
+3. Colchão: Use colchão casca de ovo ou pneumático.
+4. Almofadas: Use travesseiros para proteger proeminências ósseas (calcanhares, joelhos).
+
+# --- MÓDULO 6: SINAIS DE EMERGÊNCIA (QUANDO CHAMAR O MÉDICO) ---
+
+Procure ajuda médica se observar:
+1. Mudança súbita de comportamento (delirium): Pode indicar infecção (pneumonia, urinária).
+2. Quedas com batida de cabeça.
+3. Desmaios ou perda de consciência.
+4. Sangramento que não para.
+5. Dificuldade respiratória ou dor no peito.
+6. Febre acima de 37.8°C.
+7. Parada total de urina ou fezes por mais de 3 dias.

@@ -1,0 +1,10 @@
+[build]
+  publish = "."
+  command = "echo 'No build step needed'"
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://seu-backend-render.onrender.com/:splat"
+  status = 200
+  force = true
+
